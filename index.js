@@ -3,7 +3,7 @@ let app = new express();
 
 // set up database connection
 const knex = require("knex")({
- client: "mysql",
+ client: "mysql2",
  connection: {
   host:"concert-db.ct80yikim923.us-east-2.rds.amazonaws.com",
   user: "admin",
@@ -18,8 +18,13 @@ app.get("/",(req,res) => {
  .select()
  .from("venues")
  .then((result) => {
-  console.log(result);
-  res.send(result);
+ let html = "<body><ul>";
+ for (let i=0;i<result.length;i++) {
+  html += "<li>" + result[i].location + "</li>";
+ }
+  html += "</body>"
+  res.send(html);
  }); 
 });
 app.listen(3000);
+
